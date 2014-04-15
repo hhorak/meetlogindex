@@ -25,9 +25,12 @@ into the specified pages.
 
 %install
 %{__python} setup.py install --skip-build --root %{buildroot}
+mkdir -p %{buildroot}%{_sysconfdir}
+install -m 0660 dist-scripts/meetlogindex.cfg %{buildroot}%{_sysconfdir}/%{name}.cfg
 
 %files
 %doc README.md LICENSE
+%config(noreplace) %{_sysconfdir}/%{name}.cfg
 %{_bindir}/%{name}
 %{python_sitelib}/%{name}/*.py*
 %{python_sitelib}/%{name}-%{version}-py?.?.egg-info
