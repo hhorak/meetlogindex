@@ -106,54 +106,59 @@ def main():
     if configfiles:
         configfilesused = configfiles
     config.read(configfilesused)
-    
-    login = config.get('fedora-project', 'login')
-    password = config.get('fedora-project', 'password')
-
-    if verbose:
-        print("Fedora wiki base url: %s" % config.get('fedora-project', 'base-url'))
-        print("Fedora wiki API url: %s" % config.get('fedora-project', 'api-url'))
-        print("Fedora meetbot index url: %s" % config.get('fedora-project', 'meetbot-index'))
-        print("Fedora project login: %s" % login)
-        print("Meetlog index config wiki page: %s" % config.get('fedora-project', 'config-page'))
-
-    if login == "YOUR_WIKI_LOGIN":
-        print("Please, change the fedora login in one of the config files: %s" % str(configfilesused))
+   
+    if not config.sections():
+        print("There are no valid sections in config files: %s" % str(configfilesused))
         exit(1)
 
-    # initialize the data from config (available as wiki page as well)
-    mli = MeetLogIndex.MeetLogIndex(verbose=verbose, debug=debug)
-    mli.parse_meet_config(wikiurl=config.get('fedora-project', 'base-url'),
-                          configurl=config.get('fedora-project', 'config-page'),
-                          apiurl=config.get('fedora-project', 'api-url'),
-                          onlyid=onlyid)
+    for section in config.sections():
+        login = config.get(section, 'login')
+        password = config.get(section, 'password')
 
-    if printconfig:
-        mli.print_wiki_config()
-        exit(0)
+        if verbose:
+            print("Fedora wiki base url: %s" % config.get(section, 'base-url'))
+            print("Fedora wiki API url: %s" % config.get(section, 'api-url'))
+            print("Fedora meetbot index url: %s" % config.get(section, 'meetbot-index'))
+            print("Fedora project login: %s" % login)
+            print("Meetlog index config wiki page: %s" % config.get(section, 'config-page'))
 
-    # get the links
-    if mli.get_log_links(index_url=config.get('fedora-project', 'meetbot-index'), since=since):
-        if verbose:
-            print("Getting logs links succeeded")
-    else:
-        if verbose:
-            print("Getting logs links failed")
-        exit(1)
+        if login == "YOUR_WIKI_LOGIN":
+            print("Please, change the login in one of the config files: %s" % str(configfilesused))
+            exit(1)
 
-    if onlycheck:
-        mli.print_links()
-        exit(0)
+        # initialize the data from config (available as wiki page as well)
+        mli = MeetLogIndex.MeetLogIndex(verbose=verbose, debug=debug)
+        mli.parse_meet_config(wikiurl=config.get(section, 'base-url'),
+                              configurl=config.get(section, 'config-page'),
+                              apiurl=config.get(section, 'api-url'),
+                              onlyid=onlyid)
 
-    # change the wiki page
-    if mli.update_indexes(login, password):
-        if verbose:
-            print("Uploading the new links succeeded")
-        exit(0)
-    else:
-        if verbose:
-            print("Uploading the new links failed.")
-        exit(1)
+        if printconfig:
+            mli.print_wiki_config()
+            exit(0)
+
+        # get the links
+        if mli.get_log_links(index_url=config.get(section, 'meetbot-index'), since=since):
+            if verbose:
+                print("Getting logs links succeeded")
+        else:
+            if verbose:
+                print("Getting logs links failed")
+            exit(1)
+
+        if onlycheck:
+            mli.print_links()
+            exit(0)
+
+        # change the wiki page
+        if mli.update_indexes(login, password):
+            if verbose:
+                print("Uploading the new links succeeded")
+            exit(0)
+        else:
+            if verbose:
+                print("Uploading the new links failed.")
+            exit(1)
 
 if __name__ == "__main__":
     main()
