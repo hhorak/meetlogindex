@@ -12,7 +12,9 @@ import datetime
 PROG_NAME = 'meetbot-logs'
 
 # config files that are read
-CONFIG_FILES = ['/etc/meetlogindex.cfg', os.path.expanduser('~/.meetlogindex.cfg')]
+CONFIG_FILES = ['/etc/meetlogindex.cfg',
+                os.path.expanduser('~/.meetlogindex.cfg'),
+                os.path.join(os.path.abspath(__file__), 'meetlogindex.cfg')]
 
 
 def version():
@@ -38,6 +40,7 @@ def usage():
     print("  -i, --onlymeetlogid    If specified, only specified meetlogindex will be proceeded")
     print("  -p, --print-config     Only prints configuration of meeting log parsed from wiki")
     print("  -c, --only-check       Only checks what new meetings are in the log index, do not add the links")
+    print("  -f, --config           Only use this config file; can be used more times")
     print
     print("Examples:")
     print("  %s -h" % PROG_NAME)
@@ -59,6 +62,7 @@ def main():
     onlycheck = None
     login = None
     password = None
+    configfiles = []
 
     # parsing arguments
     args = list(sys.argv)
@@ -83,6 +87,8 @@ def main():
             since = datetime.date(int(y), int(m), int(d))
         elif arg == "-i" or arg == "--onlymeetlogid":
             onlyid = args.pop()
+        elif arg == "-f" or arg == "--config":
+            configfiles.append(args.pop())
         elif arg == "-p" or arg == "--print-config":
             printconfig = True
         elif arg == "-c" or arg == "--only-check":
@@ -96,7 +102,10 @@ def main():
 
     # read some basic configuration (wiki url, username, password)
     config = ConfigParser.ConfigParser()
-    config.read(CONFIG_FILES)
+    configfilesused = CONFIG_FILES
+    if configfiles:
+        configfilesused = configfiles
+    config.read(configfilesused)
     
     login = config.get('fedora-project', 'login')
     password = config.get('fedora-project', 'password')
@@ -108,8 +117,8 @@ def main():
         print("Fedora project login: %s" % login)
         print("Meetlog index config wiki page: %s" % config.get('fedora-project', 'config-page'))
 
-    if login == "FEDORA-LOGIN":
-        print("Please, change the fedora login in one of the config files: %s" % str(CONFIG_FILES))
+    if login == "YOUR_WIKI_LOGIN":
+        print("Please, change the fedora login in one of the config files: %s" % str(configfilesused))
         exit(1)
 
     # initialize the data from config (available as wiki page as well)
