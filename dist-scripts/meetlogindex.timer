@@ -1,0 +1,10 @@
+[Unit]
+Description=Meetbot Log Index Fetch Service
+
+[Timer]
+OnBootSec=20min
+OnUnitInactiveSec=1d
+Unit=meetlogindex.service
+
+[Install]
+WantedBy=multi-user.target

@@ -14,7 +14,7 @@ ARCHIVE_DIR="meetlogindex-${VERSION}"
 rm -rf $ARCHIVE_DIR
 mkdir $ARCHIVE_DIR
 
-cp -p --parents ./dist-scripts/{*.spec,*.cfg} $ARCHIVE_DIR
+cp -p --parents ./dist-scripts/{*.spec,*.cfg,*.timer,*.service} $ARCHIVE_DIR
 cp -p --parents ./meetlogindex/*.py $ARCHIVE_DIR
 cp -p ./README.* ./LICENSE MANIFEST.in $ARCHIVE_DIR
 cp -p ./setup.py $ARCHIVE_DIR
