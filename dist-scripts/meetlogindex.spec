@@ -1,6 +1,6 @@
 Name:		meetlogindex
 Version:	0.1
-Release:	0.1%{?dist}
+Release:	0.2%{?dist}
 Summary:	Tool for automatical gathering of meetbot logs
 
 Group:		Development/Tools
@@ -36,13 +36,13 @@ install -m 0644 dist-scripts/meetlogindex.timer %{buildroot}%{_unitdir}/%{name}.
 install -m 0644 dist-scripts/meetlogindex.service %{buildroot}%{_unitdir}/%{name}.service 
 
 %post
-%systemd_post meetlogindex.service
+%systemd_post meetlogindex.timer
 
 %preun
-%systemd_preun meetlogindex.service
+%systemd_preun meetlogindex.timer
 
 %postun
-%systemd_postun_with_restart meetlogindex.service 
+%systemd_postun_with_restart meetlogindex.timer
 
 %files
 %doc README.md LICENSE
@@ -54,6 +54,9 @@ install -m 0644 dist-scripts/meetlogindex.service %{buildroot}%{_unitdir}/%{name
 %{_unitdir}/%{name}.service
 
 %changelog
+* Wed Apr 16 2014 Honza Horak <hhorak@redhat.com> - 0.1-0.2
+- Add systemd service and timer support
+
 * Sun Mar 02 2014 Honza Horak <hhorak@redhat.com> - 0.1-0.1
 - Initial packaging
 
