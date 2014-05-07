@@ -200,11 +200,14 @@ class MeetLogIndex(object):
             print("Links for ID %s: %s" % (entry['meetlog_id'], str(entry['links'])))
 
 
-    def update_indexes(self, login, password):
+    def update_indices(self, login, password):
         """
-        Returns True if indexes have been inserted, False otherwise.
+        Adds new links to the indices wiki page.
+        Returns True if no error occured during inserting to the
+        indices, False otherwise.
         """
-        self._verbose_print("Updating indexes.")
+        self._verbose_print("Updating indices.")
+        retval = True
 
         self._verbose_print("Try to log in as %s to %s." % (login, str(self.site)))
         self.logged = self.site.login(username=login, password=password)
@@ -236,10 +239,10 @@ class MeetLogIndex(object):
 
             # append the new links to the end of the existing page
             if p.edit(appendtext=added_text):
-                self._verbose_print("Addition of the links for %s succeeded." % entry['meetlog_id'])
-                return True
+                print("Addition of the links for %s succeeded." % entry['meetlog_id'])
             else:
-                self._verbose_print("Addition of the links for %s failed." % entry['meetlog_id'])
+                print("Addition of the links for %s failed." % entry['meetlog_id'])
+                retval = False
 
-        return False
+        return retval
 

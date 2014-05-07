@@ -137,9 +137,9 @@ def main():
         exit(0)
 
     # change the wiki page
-    if mli.update_indexes(login, password):
+    if mli.update_indides(login, password):
         if verbose:
-            print("Uploading the new links succeeded")
+            print("No error while uploading the new links")
         exit(0)
     else:
         if verbose:
