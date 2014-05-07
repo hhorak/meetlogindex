@@ -1,0 +1,6 @@
+[Unit]
+Description=Meetbot Log Index Fetch Service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/meetlogindex

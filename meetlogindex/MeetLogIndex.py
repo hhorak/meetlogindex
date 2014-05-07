@@ -234,7 +234,7 @@ class MeetLogIndex(object):
             new_links = [ link for link in entry['links'] if old_text.find(link) == -1 ]
 
             # use two lines between links
-            added_text = "\n" + "\n\n".join(new_links)
+            added_text = "\n\n" + "\n\n".join(new_links)
             self._debug_print("About to add the following text to %s:\n---\n%s\n---\n" % (entry['wiki_index_page'], added_text))
 
             # append the new links to the end of the existing page
