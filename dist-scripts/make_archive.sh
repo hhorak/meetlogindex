@@ -15,6 +15,7 @@ rm -rf $ARCHIVE_DIR
 mkdir $ARCHIVE_DIR
 
 cp -p --parents ./dist-scripts/*.spec $ARCHIVE_DIR
+cp -p --parents ./dist-scripts/*.cfg $ARCHIVE_DIR
 cp -p --parents ./meetlogindex/*.py $ARCHIVE_DIR
 cp -p ./README.* ./LICENSE MANIFEST.in $ARCHIVE_DIR
 cp -p ./setup.py $ARCHIVE_DIR

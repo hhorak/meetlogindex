@@ -1,6 +1,6 @@
 Name:		meetlogindex
 Version:	0.1
-Release:	0.1%{?dist}
+Release:	0.2%{?dist}
 Summary:	Tool for automatical gathering of meetbot logs
 
 Group:		Development/Tools
@@ -27,13 +27,17 @@ into the specified pages.
 %{__python} setup.py install --skip-build --root %{buildroot}
 
 %files
-%doc README.md LICENSE
+%doc README.md LICENSE dist-scripts/meetlogindex.cfg
+%ghost %config(noreplace) %{_sysconfdir}/meetlogindex.cfg
 %{_bindir}/%{name}
 %{python_sitelib}/%{name}/*.py*
 %{python_sitelib}/%{name}-%{version}-py?.?.egg-info
 
 
 %changelog
+* Wed May 07 2014 Honza Horak <hhorak@redhat.com> - 0.1-0.2
+- Package the config file
+
 * Sun Mar 02 2014 Honza Horak <hhorak@redhat.com> - 0.1-0.1
 - Initial packaging
 
