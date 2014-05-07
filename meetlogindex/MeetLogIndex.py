@@ -219,7 +219,7 @@ class MeetLogIndex(object):
 
         for entry in self.meetlog_data:
             if not entry['links']:
-                self._verbose_print("No links for %s, skipping index page adjustment." % entry['meetlog_id'])
+                print("No links for %s, skipping index page adjustment." % entry['meetlog_id'])
                 continue
 
             # load the page where the meeting log index is stored
